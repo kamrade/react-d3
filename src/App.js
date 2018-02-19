@@ -8,10 +8,10 @@ import './App.css';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App p-2">
         <div className="header">
-          <NavLink to='/'>Home</NavLink>
-          <NavLink to='/incrementer'>Incrementer</NavLink>
+          <NavLink className='pr-1' to='/'>Home</NavLink>
+          <NavLink className='pr-1' to='/incrementer'>Incrementer</NavLink>
           <NavLink to='/about'>About</NavLink>
         </div>
         <div className="workspace">

@@ -10,8 +10,8 @@ class Incrementer extends Component {
     return (
       <div className="Incrementer">
         <span>{this.props.value}</span>
-        <button onClick={() => this.props.increment()}>Increment</button>
-        <button onClick={() => this.props.decrement()}>Decrement</button>
+        <button className='btn btn-sm btn-outline-primary mx-1' onClick={() => this.props.increment()}>Increment</button>
+        <button className='btn btn-sm btn-outline-primary' onClick={() => this.props.decrement()}>Decrement</button>
       </div>
     );
   }
