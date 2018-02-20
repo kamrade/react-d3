@@ -19,7 +19,7 @@
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js && cp -rf ./build ./backend",
+    "build": "npm-run-all build-css build-js && cp -r ./build ./server",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
@@ -27,5 +27,6 @@
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.0",
     "redux-devtools-extension": "^2.13.2"
-  }
+  },
+  "proxy": "http://localhost:2828"
 }
