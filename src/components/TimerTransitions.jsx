@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Circle from './Circle';
+import Circle from './shared/Circle';
 import { timer as d3Timer } from 'd3';
 
 class TimerTransitions extends Component {
