@@ -3,6 +3,9 @@ import { select as d3Select, easeBounceOut } from 'd3';
 
 class BigCircle extends Component {
 
+  // Need to add _isMounted property to avoid setState on 'end'
+  // if component have been unmounted
+
   constructor(props) {
     super(props);
 

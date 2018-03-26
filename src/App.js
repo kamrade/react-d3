@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Incrementer from './components/Incrementer';
 import TimerTransitions from './components/TimerTransitions';
 import TransitionAnimations from './components/TransitionAnimations';
+import ScatterPlotD3 from './components/ScatterPlotD3';
 import About from './components/About';
 
 class App extends Component {
@@ -15,7 +16,8 @@ class App extends Component {
           <NavLink className='pr-2' to='/incrementer'>Incrementer</NavLink>
           <NavLink className='pr-2' to='/about'>About</NavLink>
           <NavLink className='pr-2' to='/timer-transitions'>Timer Transitions</NavLink>
-          <NavLink to='/transition-animations'>Transition Animations</NavLink>
+          <NavLink className='pr-2' to='/transition-animations'>Transition Animations</NavLink>
+          <NavLink to='/scatterplot'>Scatterplot</NavLink>
         </div>
         <div className="workspace">
           <Route exact path='/' render={props => <Redirect to='incrementer' />} />
@@ -23,6 +25,7 @@ class App extends Component {
           <Route exact path='/about' component={About} />
           <Route exact path='/timer-transitions' component={TimerTransitions} />
           <Route exact path='/transition-animations' component={TransitionAnimations} />
+          <Route exact path='/scatterplot' component={ScatterPlotD3} />
         </div>
       </div>
     );
