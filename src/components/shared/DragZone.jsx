@@ -1,31 +1,32 @@
 import React, { Component } from 'react';
 
+import {
+  select as d3Select,
+  transition as d3Transition,
+  easeLinear as d3EaseLinear
+} from 'd3';
+
+import OPTIONS from 'data/options';
+
 class DragZone extends Component {
 
   constructor(props) {
     super(props);
-    let radius = 20;
     this.state = {
-      width: props.width || 800,
-      height: props.height || 300,
+      width: props.width || 320,
+      height: props.height || 400,
+      innerWidth: props.innerWidth || 320,
+      innerHeight: props.innerheight || 400,
       margin: props.margin || 0,
-      tooltip: {
-        display: false,
-        data: {
-          key: '',
-          value: ''
-        }
-      },
-      radius: radius,
+      radius: OPTIONS.circle.radius,
       circlesData: this.props.circlesData,
-      chartId: this.props.chartId || 'v2_chart',
 
       dragIndex: 0,
+      drag: false,
       dragPreviousCoordinates: {
         x: 0,
         y: 0
       },
-      drag: false,
       dragCoordinates: {
         x: 140,
         y: 140
@@ -78,14 +79,25 @@ class DragZone extends Component {
   }
 
   windowMouseMove(event) {
-    if (event.offsetX > 20 || event.offsetX > 20) {
-      this.setState({
-        dragCoordinates: { x: event.offsetX, y: event.offsetY }
-      });
+    let leftLimit = OPTIONS.workspace.margin.left + OPTIONS.circle.radius;
+    let topLimit = OPTIONS.workspace.margin.top + OPTIONS.circle.radius;
+    let rightLimit = this.state.width - OPTIONS.workspace.margin.right - OPTIONS.circle.radius;
+    let bottomLimit = this.state.height - OPTIONS.workspace.margin.bottom - OPTIONS.circle.radius;
+
+    if (event.offsetX < leftLimit && event.offsetY < topLimit) {
+      this.setState({ dragCoordinates: { x: leftLimit, y: topLimit } });
+    } else if (event.offsetX > rightLimit && event.offsetY > bottomLimit) {
+      this.setState({ dragCoordinates: { x: rightLimit, y: bottomLimit } });
+    } else if (event.offsetX > rightLimit) {
+      this.setState({ dragCoordinates: { x: rightLimit, y: event.offsetY } });
+    } else if (event.offsetX < leftLimit) {
+      this.setState({ dragCoordinates: { x: leftLimit, y: event.offsetY } });
+    } else if (event.offsetY > bottomLimit) {
+      this.setState({ dragCoordinates: { x: event.offsetX, y: bottomLimit } });
+    } else if (event.offsetY < topLimit) {
+      this.setState({ dragCoordinates: { x: event.offsetX, y: topLimit } });
     } else {
-      this.setState({
-        dragCoordinates: { x: 20, y: 20 }
-      });
+      this.setState({ dragCoordinates: { x: event.offsetX, y: event.offsetY } });
     }
   }
 
@@ -116,14 +128,12 @@ class DragZone extends Component {
         ]
       });
     }
-
-
   }
-
 
   render() {
 
     let { width, height } = this.state;
+
     let circles = this.state.circlesData.map((circ, index) => (
       <circle
         onMouseDown={this.circleMouseDown.bind(this)}
@@ -132,7 +142,7 @@ class DragZone extends Component {
         cx={circ.x}
         cy={circ.y}
         r={this.state.radius}
-        fill={'yellow'}
+        fill={ OPTIONS.circle.color }
         className='dragCircle'
       />)
     );
@@ -142,8 +152,7 @@ class DragZone extends Component {
 
         <svg id={this.props.chartId} width={width} height={height}>
           <g className="rectsWrapper">
-            <rect className="rect" width={width} height={height} fill={'black'}>
-
+            <rect rx={8} ry={8} className="rect" width={width} height={height} fill={OPTIONS.workspace.bg.color}>
             </rect>
           </g>
           <g className="circlesWrapper">
@@ -155,12 +164,11 @@ class DragZone extends Component {
               <circle
                 cx={this.state.dragCoordinates.x}
                 cy={this.state.dragCoordinates.y}
-                r={this.state.radius}
-                fill={'red'}
-                className='dragCircle'
+                r={this.state.radius*1.5}
+                fill={OPTIONS.circle.activeColor}
+                className='dragCircle active'
               />
             }
-
           </g>
         </svg>
 

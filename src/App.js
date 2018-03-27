@@ -6,6 +6,7 @@ import TimerTransitions from './components/TimerTransitions';
 import TransitionAnimations from './components/TransitionAnimations';
 import ScatterPlotD3 from './components/ScatterPlotD3';
 import LineChartContainer from './components/LineChartContainer';
+import DragzoneContainer from './components/DragzoneContainer';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <NavLink className='pr-2' to='/timer-transitions'>Timer Transitions</NavLink>
           <NavLink className='pr-2' to='/transition-animations'>Transition Animations</NavLink>
           <NavLink className='pr-2' to='/scatterplot'>Scatterplot</NavLink>
+          <NavLink className='pr-2' to='/dragzone'>Dragzone</NavLink>
           <NavLink to='/linechart'>Linechart</NavLink>
         </div>
         <div className="workspace">
@@ -24,6 +26,7 @@ class App extends Component {
           <Route exact path='/timer-transitions' component={TimerTransitions} />
           <Route exact path='/transition-animations' component={TransitionAnimations} />
           <Route exact path='/scatterplot' component={ScatterPlotD3} />
+          <Route exact path='/dragzone' component={DragzoneContainer} />
           <Route exact path='/linechart' component={LineChartContainer} />
         </div>
       </div>
