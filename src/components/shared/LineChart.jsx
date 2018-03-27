@@ -14,6 +14,7 @@ import {
 
 import AxisAndGrid from './line-chart/AxisAndGrid';
 import Dots from './line-chart/Dots';
+import Tooltip from './line-chart/Tooltip';
 
 console.log(`d3 version ${d3Version}`);
 
@@ -52,11 +53,33 @@ class LineChart extends Component {
   }
 
   showTooltip(e) {
-    console.log(':: show tooltip');
+    e.target.setAttribute('fill', '#fff');
+    this.setState({
+      tooltip: {
+        display: true,
+        data: {
+          key: e.target.getAttribute('data-key'),
+          value: e.target.getAttribute('data-value')
+        },
+        pos: {
+          x: e.target.getAttribute('cx'),
+          y: e.target.getAttribute('cy')
+        }
+      }
+    });
   }
 
   hideTooltip(e) {
-    console.log(':: hide tooltip');
+    e.target.setAttribute('fill', '#7dc7f4');
+    this.setState({
+      tooltip: {
+        display: false,
+        data: {
+          key: '',
+          value: ''
+        }
+      }
+    });
   }
 
   updateSize() {
@@ -102,12 +125,19 @@ class LineChart extends Component {
         <h6 className="chart-title">{title}</h6>
         <svg id={this.props.chartId} width={width} height={height}>
           <g className="chart-group" transform={transform}>
+
             <AxisAndGrid data={data} x={x} y={y} w={w} h={h} />
+
             <g className="line-group">
               <path className="line" d={line(data)} strokeLinecap="round" ></path>
             </g>
+
             <Dots data={data} x={x} y={y}
-              showTooltip={this.showTooltip} hideTooltip={this.hideTooltip}/>
+              showTooltip={this.showTooltip.bind(this)} hideTooltip={this.hideTooltip.bind(this)}/>
+
+            <Tooltip
+              tooltip={this.state.tooltip}
+            />
           </g>
         </svg>
       </div>
