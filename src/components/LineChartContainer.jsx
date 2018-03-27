@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import LineChart from './shared/LineChart';
 import DragZone from './shared/DragZone';
 
+import {
+  range as d3Range
+} from 'd3';
+
 var data = [
   {day: '02-11-2016', count: 180},
   {day: '02-12-2016', count: 250},
@@ -30,6 +34,13 @@ var margin = {
 var width = 1200;
 var height = 400;
 
+let radius = 20;
+let circlesData = d3Range(50).map((v, i) => ({
+  x: Math.round(Math.random() * (width - radius*2 ) + radius),
+  y : Math.round(Math.random() * (height - radius*2 ) + radius),
+  index: i
+}))
+
 class LineChartContainer extends Component {
 
   render() {
@@ -52,6 +63,7 @@ class LineChartContainer extends Component {
             margin={margin}
             width={width}
             height={height}
+            circlesData={circlesData}
             chartId="dragZone"
           />
         </div>
