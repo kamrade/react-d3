@@ -14,22 +14,21 @@ class Tooltip extends Component {
     let transformText = `translate(${width/2}, ${height/2 - 5})`;
     let transformArrow = '';
 
-    if(this.props.tooltip.display == true) {
+    if (this.props.tooltip.display === true) {
       var position = this.props.tooltip.pos;
       x = position.x;
       y = position.y;
       visibility = "visible"
-      if(y > height) {
+      if (y > height) {
         transform = `translate( ${x-width/2}, ${y-height-20} )`;
         transformArrow = `translate( ${width/2 - 20}, ${height - 2} )`;
-      } else if(y < height) {
+      } else if (y < height) {
         transform = `translate( ${x-width/2} , ${(Math.round(y)+20)})`;
         transformArrow = `translate( ${width/2-20}, 0)  rotate(180, 20, 0)`;
       }
     } else {
       visibility = 'hidden';
     }
-
 
     return (
       <g className="tooltip-group" transform={transform}>

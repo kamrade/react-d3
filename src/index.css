@@ -4518,6 +4518,9 @@ circle.dot {
   user-select: none;
   cursor: default; }
 
+.dragCircle {
+  cursor: pointer; }
+
 body {
   margin: 0;
   padding: 0;

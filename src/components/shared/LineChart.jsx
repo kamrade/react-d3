@@ -34,22 +34,34 @@ class LineChart extends Component {
           value: ''
         }
       },
-      chartId: 'v1_chart'
+      chartId: props.chartId || 'v1_chart'
     };
   }
 
   componentWillMount() {
-    let _self = this;
-    window.onresize = e => _self.updateSize();
+    window.addEventListener('resize', this.updateSize.bind(this), false);
     this.setState({ width: this.props.width });
   }
 
   componentWillUnmount() {
-    window.onresize = null;
+    window.removeEventListener('resize', this.updateSize.bind(this), false);
   }
 
   componentDidMount() {
     this.updateSize();
+  }
+
+  updateSize() {
+    let currentWidth = this.elNode.clientWidth;
+    if (currentWidth < this.props.width) {
+      this.setState({
+        width: currentWidth - 20
+      })
+    } else {
+      this.setState({
+        width: this.props.width
+      })
+    }
   }
 
   showTooltip(e) {
@@ -82,25 +94,11 @@ class LineChart extends Component {
     });
   }
 
-  updateSize() {
-    let currentWidth = this.elNode.clientWidth;
-    if (currentWidth < this.props.width) {
-      this.setState({
-        width: currentWidth - 20
-      })
-    } else {
-      this.setState({
-        width: this.props.width
-      })
-    }
-  }
-
   render() {
 
-    let { data, margin, width, height } = this.state;
-    let w = this.state.width - (margin.left + margin.right);
-    let h = this.state.height - (margin.top + margin.bottom);
-    let title = this.props.title;
+    let { data, margin, width, height, title } = this.state;
+    let w = width - (margin.left + margin.right);
+    let h = height - (margin.top + margin.bottom);
 
     let parseDate = d3TimeParse('%m-%d-%Y');
 
@@ -126,7 +124,7 @@ class LineChart extends Component {
         <svg id={this.props.chartId} width={width} height={height}>
           <g className="chart-group" transform={transform}>
 
-            <AxisAndGrid data={data} x={x} y={y} w={w} h={h} />
+            <AxisAndGrid x={x} y={y} w={w} h={h} />
 
             <g className="line-group">
               <path className="line" d={line(data)} strokeLinecap="round" ></path>

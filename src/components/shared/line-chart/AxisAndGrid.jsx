@@ -14,7 +14,7 @@ class AxisAndGrid extends Component {
 
   render() {
 
-    const { x, y, data, w, h } = this.props;
+    const { x, y, w, h } = this.props;
 
     let yAxis = d3AxisLeft(y)
       .ticks(5);
@@ -52,7 +52,6 @@ class AxisAndGrid extends Component {
 }
 
 AxisAndGrid.propTypes = {
-  data: PropTypes.array,
   x: PropTypes.func,
   y: PropTypes.func,
   h: PropTypes.number,
