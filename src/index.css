@@ -5216,24 +5216,46 @@ a.text-dark:hover, a.text-dark:focus {
 .sidebar {
   min-height: 100px;
   min-width: 240px;
-  background-color: pink;
+  background-color: #fff;
   flex-grow: 1; }
 
 .drag-zone--block {
   margin-top: 4rem;
   margin-right: 4rem;
-  height: 640px;
+  height: 400px;
   overflow: hidden;
   position: relative; }
   .drag-zone--block .drag-zone--container {
-    height: 640px;
+    height: 400px;
     overflow: scroll;
     position: relative; }
   .drag-zone--block .scroll-right-sign {
+    color: #3719f1;
     position: absolute;
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
+    animation: blinking 1000ms infinite; }
+  .drag-zone--block .scroll-left-sign {
+    color: #3719f1;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: blinking 1000ms infinite; }
+  .drag-zone--block .scroll-bottom-sign {
+    color: #3719f1;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: blinking 1000ms infinite; }
+  .drag-zone--block .scroll-top-sign {
+    color: #3719f1;
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
     animation: blinking 1000ms infinite; }
 
 @keyframes blinking {
@@ -5246,6 +5268,10 @@ a.text-dark:hover, a.text-dark:focus {
 
 .dragCircle {
   cursor: pointer; }
+  .dragCircle.active {
+    cursor: none; }
+  .dragCircle.active {
+    transition: fill .3s linear; }
 
 .header {
   position: fixed;

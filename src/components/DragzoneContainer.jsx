@@ -49,14 +49,32 @@ class DragzoneContainer extends Component {
       circlesData: circlesData,
 
       // STATUS
-      isScrolling: false
+      isScrollingRight: false,
+      isScrollingLeft: false,
+      isScrollingBottom: false,
+      isScrollingTop: false
     };
   }
 
-  setScrolling(status, direction) {
+  setScrollingRight(status) {
     this.setState({
-      isScrolling: status
-    })
+      isScrollingRight: status
+    });
+  }
+  setScrollingLeft(status) {
+    this.setState({
+      isScrollingLeft: status
+    });
+  }
+  setScrollingTop(status) {
+    this.setState({
+      isScrollingTop: status
+    });
+  }
+  setScrollingBottom(status) {
+    this.setState({
+      isScrollingBottom: status
+    });
   }
 
   componentDidMount() {
@@ -94,9 +112,10 @@ class DragzoneContainer extends Component {
   render() {
     return (
       <div className="d-flex flex-row">
+
         <div className="sidebar p-2">
-          <button className="btn btn-sm btn-primary btn-block">Start</button>
-          <button className="btn btn-sm btn-primary btn-block">Stop</button>
+          <button className="btn btn-sm btn-light btn-block">Start</button>
+          <button className="btn btn-sm btn-light btn-block">Stop</button>
         </div>
 
         <div className="drag-zone--block">
@@ -123,20 +142,37 @@ class DragzoneContainer extends Component {
               containerScrollX={this.containerScrollX.bind(this)}
               containerScrollY={this.containerScrollY.bind(this)}
 
-              setScrolling={this.setScrolling.bind(this)}
+              setScrollingRight={this.setScrollingRight.bind(this)}
+              setScrollingLeft={this.setScrollingLeft.bind(this)}
+              setScrollingBottom={this.setScrollingBottom.bind(this)}
+              setScrollingTop={this.setScrollingTop.bind(this)}
 
             />
           </div>
 
-          { this.state.isScrolling &&
-
+          { this.state.isScrollingRight &&
             <div className="scroll-right-sign">
               <span className="oi" data-glyph="arrow-right"></span>
             </div>
-
           }
 
+          { this.state.isScrollingLeft &&
+            <div className="scroll-left-sign">
+              <span className="oi" data-glyph="arrow-left"></span>
+            </div>
+          }
 
+          { this.state.isScrollingBottom &&
+            <div className="scroll-bottom-sign">
+              <span className="oi" data-glyph="arrow-bottom"></span>
+            </div>
+          }
+
+          { this.state.isScrollingTop &&
+            <div className="scroll-top-sign">
+              <span className="oi" data-glyph="arrow-top"></span>
+            </div>
+          }
 
         </div>
       </div>

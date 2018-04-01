@@ -7,32 +7,50 @@
 .sidebar
   min-height: 100px
   min-width: 240px
-  background-color: pink
+  background-color: $white
   flex-grow: 1
 
 
 .drag-zone--block
   margin-top: 4rem
   margin-right: 4rem
-  height: 640px
+  height: 400px
   overflow: hidden
   position: relative
 
   .drag-zone--container
-    height: 640px
+    height: 400px
     overflow: scroll
     position: relative
 
   .scroll-right-sign
+    color: $primary
     position: absolute
     right: 1rem
     top: 50%
     transform: translateY(-50%)
     animation: blinking 1000ms infinite
 
-  // .scroll-bottom-sign
+  .scroll-left-sign
+    color: $primary
+    position: absolute
+    left: 1rem
+    top: 50%
+    transform: translateY(-50%)
+    animation: blinking 1000ms infinite
+
+  .scroll-bottom-sign
+    color: $primary
     position: absolute
     bottom: 1rem
+    left: 50%
+    transform: translateX(-50%)
+    animation: blinking 1000ms infinite
+
+  .scroll-top-sign
+    color: $primary
+    position: absolute
+    top: 1rem
     left: 50%
     transform: translateX(-50%)
     animation: blinking 1000ms infinite

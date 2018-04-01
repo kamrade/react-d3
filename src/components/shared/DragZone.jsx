@@ -5,6 +5,9 @@ import {
   // select as d3Select,
   // transition as d3Transition,
   // easeLinear as d3EaseLinear
+  easeQuadIn,
+  select as d3Select
+
 } from 'd3';
 
 import OPTIONS from 'data/options';
@@ -14,6 +17,7 @@ class DragZone extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // container options
       width: props.width,
       height: props.height,
       innerWidth: props.innerWidth,
@@ -21,10 +25,15 @@ class DragZone extends Component {
       margin: props.margin,
       scrollStep: props.scrollStep,
 
-
+      // circles options
       radius: OPTIONS.circle.radius,
       circlesData: this.props.circlesData,
+      fillColor: OPTIONS.circle.fillColor,
+      strokeColor: OPTIONS.circle.strokeColor,
+      activeFillColor: OPTIONS.circle.activeFillColor,
+      activeStrokeColor: OPTIONS.circle.activeStrokeColor,
 
+      // dragging options
       dragIndex: 0,
       drag: false,
       dragPreviousCoordinates: {
@@ -38,7 +47,7 @@ class DragZone extends Component {
     };
   }
 
-  circleMouseDown(e) {
+  onMouseDownHandler(e) {
     let dataIndex = parseInt(e.target.getAttribute('data-index'), 10);
     let x = parseInt(e.target.getAttribute('cx'), 10);
     let y = parseInt(e.target.getAttribute('cy'), 10);
@@ -50,10 +59,16 @@ class DragZone extends Component {
       dragPreviousCoordinates: { x, y },
       circlesData: this.state.circlesData.filter(item => item.index !== dataIndex)
     }, () => {
-      let that = this;
-      window.onmouseup = (e) => that.windowMouseUp(e);
-      window.onmousemove = (e) => that.windowMouseMove(e);
+      d3Select(this.activeCircleNode)
+        .transition()
+        .duration(200)
+        .ease(easeQuadIn)
+        .attr('r', this.state.radius*1.1);
     });
+
+    window.onmouseup = (e) => this.windowMouseUp(e);
+    window.onmousemove = (e) => this.windowMouseMove(e);
+
   }
 
   windowMouseMove(event) {
@@ -66,25 +81,40 @@ class DragZone extends Component {
     let pointX = event.clientX - this.props.containerOffsetLeft + this.props.cScrollX;
     let pointY = event.clientY - this.props.containerOffsetTop  + this.props.cScrollY;
 
-    if (pointX < this.props.cScrollX + 64) {
+    // скролл влево
+    if (pointX < this.props.cScrollX + 32) {
+      this.props.setScrollingLeft(true);
       this.props.containerScrollX(-1*this.state.scrollStep);
-    }
-    if (pointY < this.props.cScrollY + 64) {
-      this.props.containerScrollY(-1*this.state.scrollStep);
+    } else {
+      this.props.setScrollingLeft(false);
     }
 
-    // двигаем скролл окна вправо
-    if (pointX > this.props.containerWidth + this.props.cScrollX - 64) {
-      this.props.setScrolling(true);
+    // скролл вправо
+    if (pointX > this.props.containerWidth + this.props.cScrollX - 32) {
+      this.props.setScrollingRight(true);
       this.props.containerScrollX(this.state.scrollStep);
     } else {
-      this.props.setScrolling(false);
+      this.props.setScrollingRight(false);
     }
 
-    // двигаем скролл окна вниз
-    if (pointY > this.props.containerHeight - 64) {
+    // скролл вниз
+    if (pointY > this.props.containerHeight + this.props.cScrollY - 32) {
+      this.props.setScrollingBottom(true);
       this.props.containerScrollY(this.state.scrollStep);
+    } else {
+      this.props.setScrollingBottom(false);
     }
+
+    // скролл вверх
+    if (pointY < this.props.cScrollY + 32) {
+      this.props.setScrollingTop(true);
+      this.props.containerScrollY(-1*this.state.scrollStep);
+    } else {
+      this.props.setScrollingTop(false);
+    }
+
+
+
 
     // ограничение по перемещению
     if (pointX < leftLimit && pointY < topLimit) {
@@ -115,37 +145,50 @@ class DragZone extends Component {
       // move
       this.setState({ dragCoordinates: { x: pointX, y: pointY } });
     }
-
-
   }
 
   windowMouseUp() {
     window.onmouseup = null;
     window.onmousemove = null;
 
+    clearTimeout(this.colorTimeout);
+
+    this.props.setScrollingRight(false);
+    this.props.setScrollingLeft(false);
+    this.props.setScrollingTop(false);
+    this.props.setScrollingBottom(false);
+
     let { x, y } = this.state.dragCoordinates;
 
-    if (x > this.state.width || y > this.state.height) {
-      this.setState({
-        drag: false,
-        circlesData: [
-          ...this.state.circlesData.slice(),
-          {
-            x: this.state.dragPreviousCoordinates.x,
-            y: this.state.dragPreviousCoordinates.y,
-            index: this.state.dragIndex
-          }
-        ]
-      });
-    } else {
-      this.setState({
-        drag: false,
-        circlesData: [
-          ...this.state.circlesData.slice(),
-          { x, y, index: this.state.dragIndex }
-        ]
-      });
-    }
+    this.setState({
+      activeFillColor: OPTIONS.circle.activeFillColor
+    }, () => {
+      if (x > this.state.width || y > this.state.height) {
+        this.setState({
+          drag: false,
+          circlesData: [
+            ...this.state.circlesData.slice(),
+            {
+              x: this.state.dragPreviousCoordinates.x,
+              y: this.state.dragPreviousCoordinates.y,
+              index: this.state.dragIndex
+            }
+          ]
+        });
+      } else {
+        this.setState({
+          drag: false,
+          circlesData: [
+            ...this.state.circlesData.slice(),
+            { x, y, index: this.state.dragIndex }
+          ]
+        });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.colorTimeout);
   }
 
   render() {
@@ -154,13 +197,21 @@ class DragZone extends Component {
 
     let circles = this.state.circlesData.map((circ, index) => (
       <circle
-        onMouseDown={this.circleMouseDown.bind(this)}
+
+        onMouseDown={this.onMouseDownHandler.bind(this)}
+
         data-index={circ.index}
         key={index}
         cx={circ.x}
         cy={circ.y}
         r={this.state.radius}
-        fill={ OPTIONS.circle.color }
+
+        fill={this.state.fillColor}
+        fillOpacity={`0.5`}
+
+        stroke={this.state.strokeColor}
+        strokeWidth={`4px`}
+
         className='dragCircle'
       />)
     );
@@ -180,10 +231,15 @@ class DragZone extends Component {
 
             { this.state.drag &&
               <circle
+                ref={node => this.activeCircleNode = node}
                 cx={this.state.dragCoordinates.x}
                 cy={this.state.dragCoordinates.y}
-                r={this.state.radius*1.2}
-                fill={OPTIONS.circle.activeColor}
+                r={this.state.radius}
+
+                fill={this.state.activeFillColor}
+                fillOpacity={`0.5`}
+                stroke={this.state.activeStrokeColor}
+                strokeWidth={`4px`}
                 className='dragCircle active'
               />
             }
