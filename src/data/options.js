@@ -2,6 +2,7 @@ export default {
   workspace: {
     width: 1200,
     height: 800,
+    scrollStep: 16,
     margin: {
       top: 32,
       right: 32,
@@ -15,6 +16,6 @@ export default {
   circle: {
     color: "#166fc7",
     activeColor: "#1153d9",
-    radius: 8
+    radius: 16
   }
 }

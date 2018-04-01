@@ -1,0 +1,40 @@
+// .DragzoneContainer
+  width: 200px
+  height: 200px
+  overflow-x: scroll
+  overflow-y: auto
+
+.sidebar
+  height: 100px
+  min-width: 240px
+  background-color: pink
+  flex-grow: 1
+
+
+.drag-zone--block
+  margin-top: 4rem
+  margin-right: 4rem
+  height: 640px
+  overflow: hidden
+  position: relative
+
+  .drag-zone--container
+    height: 640px
+    overflow: scroll
+    position: relative
+
+  .scroll-right-sign
+    position: absolute
+    right: 1rem
+    top: 50%
+    transform: translateY(-50%)
+    animation: blinking 1000ms infinite
+
+
+@keyframes blinking
+  0%
+    opacity: 1
+  50%
+    opacity: .1
+  100%
+    opacity: 1

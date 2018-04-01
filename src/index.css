@@ -4487,39 +4487,49 @@ a.text-dark:hover, a.text-dark:focus {
 .invisible {
   visibility: hidden !important; }
 
-.line {
-  fill: none;
-  stroke: #7dc7f4;
-  stroke-width: 5px; }
+.sidebar {
+  height: 100px;
+  min-width: 240px;
+  background-color: pink;
+  flex-grow: 1; }
 
-.axis path {
-  fill: none;
-  stroke: none;
-  shape-rendering: crispEdges; }
+.drag-zone--block {
+  margin-top: 4rem;
+  margin-right: 4rem;
+  height: 640px;
+  overflow: hidden;
+  position: relative; }
+  .drag-zone--block .drag-zone--container {
+    height: 640px;
+    overflow: scroll;
+    position: relative; }
+  .drag-zone--block .scroll-right-sign {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: blinking 1000ms infinite; }
 
-.axis line {
-  fill: none;
-  stroke: none;
-  shape-rendering: crispEdges; }
-
-.y-grid .tick line {
-  stroke: #4b5f87;
-  opacity: .2; }
-
-.y-grid path {
-  stroke: none;
-  fill: #333; }
-
-circle.dot {
-  transition: all .15s ease;
-  cursor: pointer; }
-
-.chart-title {
-  user-select: none;
-  cursor: default; }
+@keyframes blinking {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: .1; }
+  100% {
+    opacity: 1; } }
 
 .dragCircle {
   cursor: pointer; }
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  width: 100%;
+  padding: .5rem;
+  height: 2rem;
+  display: none; }
 
 body {
   margin: 0;
