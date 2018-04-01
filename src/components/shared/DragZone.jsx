@@ -66,11 +66,6 @@ class DragZone extends Component {
     let pointX = event.clientX - this.props.containerOffsetLeft + this.props.cScrollX;
     let pointY = event.clientY - this.props.containerOffsetTop  + this.props.cScrollY;
 
-    // console.log(`clientX: ${event.clientX}, container offset left: ${this.props.containerOffsetLeft}, scrollX: ${this.props.cScrollX}`);
-    // console.log(`clientY: ${event.clientY}, container offset left: ${this.props.containerOffsetTop}, scrollY: ${this.props.cScrollY}`);
-
-    // console.log(`pointX: ${pointX - this.props.cScrollX} pointY: ${pointY - this.props.cScrollY}`);
-
     if (pointX < this.props.cScrollX + 64) {
       this.props.containerScrollX(-1*this.state.scrollStep);
     }
@@ -78,9 +73,12 @@ class DragZone extends Component {
       this.props.containerScrollY(-1*this.state.scrollStep);
     }
 
-    // двигаем скролл окна влево
+    // двигаем скролл окна вправо
     if (pointX > this.props.containerWidth + this.props.cScrollX - 64) {
+      this.props.setScrolling(true);
       this.props.containerScrollX(this.state.scrollStep);
+    } else {
+      this.props.setScrolling(false);
     }
 
     // двигаем скролл окна вниз
